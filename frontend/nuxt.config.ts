@@ -8,8 +8,9 @@ export default defineNuxtConfig({
   ],
 
   runtimeConfig: {
+    strapiServerUrl: process.env.NUXT_STRAPI_SERVER_URL || process.env.STRAPI_SERVER_URL || '', // server-side container connection
     public: {
-      strapiUrl: process.env.STRAPI_URL || 'http://localhost:1337'
+      strapiUrl: process.env.NUXT_PUBLIC_STRAPI_URL || process.env.STRAPI_URL || 'http://localhost:1337'
     }
   },
 
@@ -22,6 +23,7 @@ export default defineNuxtConfig({
         { name: 'description', content: 'A premium, minimalist blog exploring design, development, and lifestyle.' }
       ],
       link: [
+        { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap' }

@@ -35,16 +35,13 @@ Open `http://localhost:3000` in the browser to view the blog.
 
 ## How to Run with Docker
 
-If you want to build and run the services inside Docker containers, use these commands:
+You can build and start both the backend and frontend services simultaneously using Docker Compose. Run this single command in the project root folder:
 
-### Backend
 ```bash
-docker build -t strapi-backend -f backend/Dockerfile.backend backend/
-docker run -d -p 1337:1337 --name strapi-cms strapi-backend
+docker compose up --build
 ```
 
-### Frontend
-```bash
-docker build -t nuxt-frontend -f frontend/Dockerfile.frontend frontend/
-docker run -d -p 3000:3000 --name nuxt-web -e NUXT_PUBLIC_STRAPI_URL=http://localhost:1337 nuxt-frontend
-```
+Once running:
+- Open `http://localhost:3000` in the browser to view the blog.
+- The backend API will be accessible at `http://localhost:1337`.
+

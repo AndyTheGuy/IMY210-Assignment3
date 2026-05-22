@@ -4,7 +4,7 @@ import { computed } from 'vue'
 
 const route = useRoute()
 const config = useRuntimeConfig()
-const strapiUrl = config.public.strapiUrl
+const strapiUrl = (process.server && config.strapiServerUrl) ? config.strapiServerUrl : config.public.strapiUrl
 const slug = route.params.slug
 
 // Fetch single post by slug with relations

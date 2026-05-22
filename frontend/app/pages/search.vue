@@ -3,7 +3,7 @@
 import { ref, computed } from 'vue'
 
 const config = useRuntimeConfig()
-const strapiUrl = config.public.strapiUrl
+const strapiUrl = (process.server && config.strapiServerUrl) ? config.strapiServerUrl : config.public.strapiUrl
 
 // Fetch all posts with category and author relations
 const { data: postsData, error } = await useFetch(`${strapiUrl}/api/posts?populate=*`)

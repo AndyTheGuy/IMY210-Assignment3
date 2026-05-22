@@ -1,0 +1,35 @@
+# Dockerfile.frontend - Containerization for Nuxt 3 Frontend
+# Andreas Bester - u04613628
+FROM node:20-alpine AS build
+
+WORKDIR /app
+
+# Copy dependency configs first to leverage Docker cache
+COPY package*.json ./
+RUN npm install
+
+# Copy source code files
+COPY . .
+
+# Build the Nuxt production SSR/Server output
+RUN npm run build
+
+# Production runner stage
+FROM node:20-alpine AS runner
+
+WORKDIR /app
+
+# Copy only the compiled output and package structure
+COPY --from=build /app/.output ./.output
+COPY --from=build /app/package.json ./package.json
+
+# Expose default Nuxt port
+EXPOSE 3000
+
+# Set environment variables for production
+ENV PORT=3000
+ENV NODE_ENV=production
+ENV HOST=0.0.0.0
+
+# Run the compiled server
+CMD ["node", ".output/server/index.mjs"]

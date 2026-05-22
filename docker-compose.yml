@@ -1,0 +1,41 @@
+# docker-compose.yml - Multi-container Streamlining
+# Andreas Bester - u04613628
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.backend
+    container_name: inkspire-backend
+    ports:
+      - "1337:1337"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=1337
+      - APP_KEYS=imy210DefaultAppKey1,imy210DefaultAppKey2
+      - API_TOKEN_SALT=imy210DefaultApiTokenSaltKey
+      - ADMIN_JWT_SECRET=imy210DefaultAdminJwtSecretKey
+      - TRANSFER_TOKEN_SALT=imy210DefaultTransferTokenSaltKey
+      - ENCRYPTION_KEY=imy210DefaultEncryptionKeyString
+      - JWT_SECRET=imy210DefaultUsersPermissionsJwtSecretKey
+    volumes:
+      # Persist SQLite database changes to your local machine
+      - ./backend/.tmp:/opt/app/.tmp
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.frontend
+    container_name: inkspire-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - NUXT_STRAPI_SERVER_URL=http://backend:1337
+      - NUXT_PUBLIC_STRAPI_URL=http://localhost:1337
+    depends_on:
+      - backend

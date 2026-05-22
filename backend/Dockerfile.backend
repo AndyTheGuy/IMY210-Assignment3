@@ -1,0 +1,28 @@
+# Dockerfile.backend - Containerization for Strapi CMS
+# Andreas Bester - u04613628
+FROM node:20-alpine
+
+# Install native dependencies required for better-sqlite3 compilation on alpine
+RUN apk add --no-cache build-base gcc autoconf automake libtool zlib-dev libuuid
+
+WORKDIR /opt/app
+
+# Leverage Docker cache by copying dependency files first
+COPY package*.json ./
+RUN npm install
+
+# Copy project source code
+COPY . .
+
+# Build the Strapi production admin panel
+RUN npm run build
+
+# Expose backend REST port
+EXPOSE 1337
+
+# Set production execution configurations
+ENV NODE_ENV=production
+ENV PORT=1337
+
+# Launch production Strapi
+CMD ["npm", "run", "start"]
